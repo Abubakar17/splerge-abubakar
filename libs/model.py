@@ -36,8 +36,7 @@ class Split_RPN(torch.nn.Module):
             """
             b_count=1
             self.b_count=b_count #block count starting from 1
-            self.b_inputs=[18,55,55,55,55] #the first block gets 18 input channels, the rest are set manually 
-            self.b_outputs=55 
+            self.b_inputs=[18,55,55,55,55] #the first block gets 18 input channels, the rest are set manually
             
             self.conv_2= torch.nn.Conv2d( in_channels=self.b_inputs[b_count-1], out_channels=6, kernel_size=7, dilation=2)
             #the in_channels will differ since only the first block gets to have 18 inputs
