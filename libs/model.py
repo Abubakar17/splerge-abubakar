@@ -34,7 +34,7 @@ class Split_RPN(torch.nn.Module):
             1x2 max pooling layer
             1x1 projection pooling for top and bottom branch
             """
-            b_count=1
+            #bcount cant be initialized since it will return to 1 everytime the function is called and the blocks will not be updated
             self.b_count=b_count #block count starting from 1
             self.b_inputs=[18,55,55,55,55] #the first block gets 18 input channels, the rest are set manually
             
@@ -43,6 +43,9 @@ class Split_RPN(torch.nn.Module):
             self.conv_3= torch.nn.Conv2d( in_channels=self.b_inputs[b_count-1], out_channels=6, kernel_size=7, dilation=3)
             self.conv_4= torch.nn.Conv2d( in_channels=self.b_inputs[b_count-1], out_channels=6, kernel_size=7, dilation=4)
             
+            self.conv1x2= torch.nn.MaxPool2d(kernel_size=(1,2)) #max pooling 1x2
+            
+            self.projpool= torch.nn.Conv2d(kernel_size=7) #creating projection pool ....after some time
             
             
             
