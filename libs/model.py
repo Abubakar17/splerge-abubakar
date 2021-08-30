@@ -61,12 +61,14 @@ class Split_RPN(torch.nn.Module):
            
         #TOP BRANCH
         top_result= self.conv1x1_top(output) #convolution layer
-        #top_result=  pls help i cant get the projection pool set up. How do i replace every input by its mean? i know that we have to use the .mean function for the mean 
-        #but how do i "maintain the spatial size of the input"
-            
+        batch_size, channels, height, width = x.shape #seperating image into its components
+        top_result = torch.mean(top_result, dim=3)
+        top_result= top_result.view(batch_size, self.block_conv1x1_output, height, 1).repeat(1, 1, 1, top_branch_x.shape[3])
+        
         #BOTTOM BRANCH
         bot_result= self.conv1x1_bot(output) #convolution layer
-        #bot_result= 
+        bot_result = torch.mean(bot_result, dim=3)
+        bot_result = bot_result.view(batch_size, 1, height, 1).repeat(1, 1, 1, bottom_result.shape[3])         
         bot_probabilties= torch.sigmoid(bot_result)
         
         block_output= torch.cat([top_result, output, bot_probabilities], dim=1)
