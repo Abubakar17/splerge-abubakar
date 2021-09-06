@@ -74,7 +74,7 @@ class Split_RPN(torch.nn.Module):
         block_output= torch.cat([top_result, output, bot_probabilities], dim=1)
         
         if self.b_count>=2: return(block_output, bot_probabilities) 
-        else return(block_output, None)
+        else: return(block_output, None)
         
         
         #pass
