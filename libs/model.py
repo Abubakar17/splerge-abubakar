@@ -5,13 +5,13 @@ import torch.nn.functional as F
 class Split_SFCN(torch.nn.Module):
     def __init__(self):
         super(Split_SFCN, self).__init__()
-        
-            #TODO: Initialize the required layers for this network
-            #3 convolution layers with 7x7 kernels 
 
-            self.layer1= torch.nn.Conv2d(in_channels=2, out_channels=18, kernel_size=7) 
-            self.layer2= torch.nn.Conv2d(in_channels=18, out_channels=18, kernel_size=7) 
-            self.layer3= torch.nn.Conv2d(in_channels=18, out_channels=18, dilation=2, kernel_size=7) 
+        #TODO: Initialize the required layers for this network
+        #3 convolution layers with 7x7 kernels 
+
+        self.layer1= torch.nn.Conv2d(in_channels=2, out_channels=18, kernel_size=7) 
+        self.layer2= torch.nn.Conv2d(in_channels=18, out_channels=18, kernel_size=7) 
+        self.layer3= torch.nn.Conv2d(in_channels=18, out_channels=18, dilation=2, kernel_size=7) 
         
     def forward(self, x):
         
@@ -28,27 +28,27 @@ class Split_RPN(torch.nn.Module):
     def __init__(self,b_count): #b_count is the current block number and also the parameter of this class
         super(Split_RPN, self).__init__()
             
-            #TODO: Initialize the required layers for this network
-            #3 convolutional layers
-            #1x2 max pooling layer
-            #1x1 projection pooling for top and bottom branch
-           
-            self.b_count=b_count #block count starting from 0
-            self.b_inputs=[18,55,55,55,55] #the first block gets 18 input channels, the rest are set manually
-           
-            #the in_channels will differ since only the first block gets to have 18 inputs
-            self.conv_2= torch.nn.Conv2d( in_channels=self.b_inputs[b_count], out_channels=6, kernel_size=7, dilation=2)
-            self.conv_3= torch.nn.Conv2d( in_channels=self.b_inputs[b_count], out_channels=6, kernel_size=7, dilation=3)
-            self.conv_4= torch.nn.Conv2d( in_channels=self.b_inputs[b_count], out_channels=6, kernel_size=7, dilation=4)
-            
-            self.conv1x2= torch.nn.MaxPool2d(kernel_size=(1,2)) #max pooling 1x2 
-          
-            #there are 2 paths for the output after this point 
-            #bottom path: 1-d output meaning a single sheet/slice of outputs
-            self.conv1x1_bot= torch.nn.Conv2d(in_channels=18, out_channels=1,kernel_size=7) 
-            
-            #top path mantaining the spatial size of input
-            self.conv1x1_top= torch.nn.Conv2d(in_channels=18, out_channels=55,kernel_size=7)
+        #TODO: Initialize the required layers for this network
+        #3 convolutional layers
+        #1x2 max pooling layer
+        #1x1 projection pooling for top and bottom branch
+
+        self.b_count=b_count #block count starting from 0
+        self.b_inputs=[18,55,55,55,55] #the first block gets 18 input channels, the rest are set manually
+
+        #the in_channels will differ since only the first block gets to have 18 inputs
+        self.conv_2= torch.nn.Conv2d( in_channels=self.b_inputs[b_count], out_channels=6, kernel_size=7, dilation=2)
+        self.conv_3= torch.nn.Conv2d( in_channels=self.b_inputs[b_count], out_channels=6, kernel_size=7, dilation=3)
+        self.conv_4= torch.nn.Conv2d( in_channels=self.b_inputs[b_count], out_channels=6, kernel_size=7, dilation=4)
+
+        self.conv1x2= torch.nn.MaxPool2d(kernel_size=(1,2)) #max pooling 1x2 
+
+        #there are 2 paths for the output after this point 
+        #bottom path: 1-d output meaning a single sheet/slice of outputs
+        self.conv1x1_bot= torch.nn.Conv2d(in_channels=18, out_channels=1,kernel_size=7) 
+
+        #top path mantaining the spatial size of input
+        self.conv1x1_top= torch.nn.Conv2d(in_channels=18, out_channels=55,kernel_size=7)
             
     def forward(self, x):
         #to this point we have constructed the layers required to progress further
