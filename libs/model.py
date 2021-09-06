@@ -135,7 +135,7 @@ class Split_CPN(torch.nn.Module):
         #pass
 
 class SplitModel(torch.nn.Module):
-    def __init__(self, infer=FALSE):
+    def __init__(self):
         super(SplitModel, self).__init__()   
         #TODO: Initialize SFCN, RPNs and CPNs
         
