@@ -11,8 +11,8 @@ from torchvision import transforms
 
 from termcolor import cprint
 
-from libs.utils import resize_image
-from libs.utils import normalize_numpy_image
+#from libs.utils import resize_image
+#from libs.utils import normalize_numpy_image
 
 from truthpy import Document
 
